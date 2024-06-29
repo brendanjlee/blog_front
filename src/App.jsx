@@ -1,7 +1,11 @@
+import NavBar from "./components/Navbar";
+import HomePage from "./components/HomePage";
+
 function App() {
   return (
     <>
-      <h1>Welcome Home</h1>
+      <NavBar />
+      <HomePage />
     </>
   );
 }
