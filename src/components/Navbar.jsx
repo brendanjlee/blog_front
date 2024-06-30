@@ -1,4 +1,12 @@
-import { Box, Flex, Button, Spacer, ButtonGroup } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Button,
+  Spacer,
+  ButtonGroup,
+  Link as ChakraLink,
+} from "@chakra-ui/react";
+import { Link as ReactRouterLink } from "react-router-dom";
 
 function NavBar() {
   const navMargin = "20px";
@@ -7,12 +15,18 @@ function NavBar() {
     <Box bg="white" w="100%" h="4rem">
       <Flex h="100%" alignItems={"center"} ml={navMargin} mr={navMargin}>
         <Button variant="link" fontSize={32}>
-          Blog
+          <ChakraLink as={ReactRouterLink} to="/">
+            Blog
+          </ChakraLink>
         </Button>
         <Spacer />
         <ButtonGroup>
-          <Button>Login</Button>
-          <Button>Singup</Button>
+          <ChakraLink as={ReactRouterLink} to="/login">
+            <Button>Login</Button>
+          </ChakraLink>
+          <ChakraLink as={ReactRouterLink} to="/signup">
+            <Button>Signup</Button>
+          </ChakraLink>
         </ButtonGroup>
       </Flex>
     </Box>
