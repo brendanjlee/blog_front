@@ -2,6 +2,7 @@ import { Box, Text, Flex, Image, Spacer } from "@chakra-ui/react";
 
 function PostCard() {
   const data = {
+    // title: "Short Title",
     title: "The resume that got a software engineer a $300,000 job at Google",
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
@@ -11,9 +12,15 @@ function PostCard() {
   };
 
   return (
-    <Box bg={"white"} borderRadius={"10px"} h={"150px"} w={"60%"} p={"10px"}>
-      <Flex>
-        <Flex direction={"column"}>
+    <Box
+      bg={"white"}
+      borderRadius={"10px"}
+      p={"10px"}
+      minW={"600px"}
+      maxW={"600px"}
+    >
+      <Flex gap={"5px"}>
+        <Flex direction={"column"} flex={"1"}>
           <Text fontSize={20} fontWeight={"bold"}>
             {data.title}
           </Text>
@@ -26,7 +33,7 @@ function PostCard() {
         <Image
           src={data.image}
           alt="blog image"
-          objectFit={"contain"}
+          objectFit={"cover"}
           boxSize={"130px"}
         />
       </Flex>
