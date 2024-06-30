@@ -1,4 +1,12 @@
-import { Box, Text, Flex, Image, Spacer } from "@chakra-ui/react";
+import {
+  Text,
+  Flex,
+  Image,
+  Spacer,
+  LinkBox,
+  LinkOverlay,
+} from "@chakra-ui/react";
+import { Link as ReactRouterLink } from "react-router-dom";
 
 function PostCard() {
   const data = {
@@ -12,7 +20,7 @@ function PostCard() {
   };
 
   return (
-    <Box
+    <LinkBox
       bg={"white"}
       borderRadius={"10px"}
       p={"10px"}
@@ -21,9 +29,11 @@ function PostCard() {
     >
       <Flex gap={"5px"}>
         <Flex direction={"column"} flex={"1"}>
-          <Text fontSize={20} fontWeight={"bold"}>
-            {data.title}
-          </Text>
+          <LinkOverlay as={ReactRouterLink} to="tempPage">
+            <Text fontSize={20} fontWeight={"bold"}>
+              {data.title}
+            </Text>
+          </LinkOverlay>
           <Spacer />
           <Text>{data.author}</Text>
           <Text fontSize={12} color={"grey"}>
@@ -37,7 +47,7 @@ function PostCard() {
           boxSize={"130px"}
         />
       </Flex>
-    </Box>
+    </LinkBox>
   );
 }
 
