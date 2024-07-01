@@ -1,37 +1,56 @@
-import { Flex, Text, Box, Image } from "@chakra-ui/react";
+import { Flex, Text, Box, Image, Center } from "@chakra-ui/react";
 import CommentSection from "./Comments";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import blogService from "../../services/blog";
 
 function BlogPage() {
-  const data = {
-    // title: "Short Title",
-    title: "The resume that got a software engineer a $300,000 job at Google",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    author: "Brendan Lee",
-    image: "https://bit.ly/dan-abramov'",
-    postedDate: "2024-06-26",
-  };
+  const { postId } = useParams();
+  const [loading, setLoading] = useState(true);
+  const [postData, setPostData] = useState({});
+  const [comments, setComments] = useState([]);
+
+  useEffect(() => {
+    const fetchPostById = async () => {
+      const res = await blogService.getPostById(postId);
+      setPostData(res.data);
+      setLoading(false);
+    };
+    const fetchPostComments = async () => {
+      const res = await blogService.getPostComments(postId);
+      setComments(res.data);
+    };
+    void fetchPostById();
+    void fetchPostComments();
+  }, [postId]);
+
+  if (loading) {
+    return (
+      <Center>
+        <Text>Loading Data...</Text>
+      </Center>
+    );
+  }
 
   return (
     <Flex m={"20px"} flexDir={"column"} alignItems={"center"} gap={"30px"}>
       <Flex flexDir={"column"} alignItems={"center"} w={"60%"} gap={"40px"}>
         <Box display={"flex"} flexDir={"column"}>
           <Text fontSize={"5xl"} fontWeight={"bold"}>
-            {data.title}
+            {postData.title}
           </Text>
-
-          <Text>By {data.author}</Text>
-          <Text>{data.postedDate}</Text>
+          <Text>By {postData.author.username}</Text>
+          <Text>{postData.postedDate}</Text>
         </Box>
         <Image
-          src={data.image}
+          src={postData.imageUrl}
           alt="blog image"
           objectFit={"cover"}
           maxW={"400px"}
         />
-        <Text>{data.content}</Text>
+        <Text>{postData.content}</Text>
       </Flex>
-      <CommentSection />
+      <CommentSection commentData={comments} />
     </Flex>
   );
 }

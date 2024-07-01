@@ -1,3 +1,6 @@
+/* eslint-disable react/prop-types */
+// todo ERROR handling and proptypes
+
 import {
   Box,
   Flex,
@@ -8,7 +11,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-function CommentCard() {
+function CommentCard({ comment }) {
   return (
     <Box
       display={"flex"}
@@ -20,12 +23,12 @@ function CommentCard() {
     >
       <Box display={"flex"} gap={"10px"} alignItems={"center"}>
         <Text fontSize="18px" fontWeight={"bold"}>
-          BoeJiden123
+          {comment.author.username}
         </Text>
-        <Text>2024-06-29</Text>
+        <Text>{comment.postedDate}</Text>
       </Box>
       <Spacer />
-      <Text>Wow!!!!!</Text>
+      <Text>{comment.content}</Text>
     </Box>
   );
 }
@@ -44,18 +47,17 @@ function AddComment() {
   );
 }
 
-function CommentSection() {
+function CommentSection({ commentData }) {
   return (
     <Box w={"60%"}>
       <Box>
-        <Text fontSize={"3xl"}>4 Comments</Text>
+        <Text fontSize={"3xl"}>{commentData.length} Comments</Text>
         <Divider />
       </Box>
       <Box display={"flex"} flexDir={"column"} gap={"10px"}>
-        <CommentCard />
-        <CommentCard />
-        <CommentCard />
-        <CommentCard />
+        {commentData.map((comment) => (
+          <CommentCard key={comment._id} comment={comment} />
+        ))}
       </Box>
       <AddComment />
     </Box>
