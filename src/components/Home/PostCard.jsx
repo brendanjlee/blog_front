@@ -1,3 +1,6 @@
+/* eslint-disable react/prop-types */
+// todo ERROR handling and proptypes
+
 import {
   Text,
   Flex,
@@ -7,7 +10,6 @@ import {
   LinkOverlay,
 } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
-import PropTypes from "prop-types";
 
 function PostCard({ data }) {
   return (
@@ -57,9 +59,5 @@ function PostList({ blogData }) {
     </Flex>
   );
 }
-
-PostCard.PropTypes = {
-  data: PropTypes.object,
-};
 
 export default PostList;
