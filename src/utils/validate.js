@@ -12,7 +12,15 @@ function validateSingup(email, username, password) {
   return true;
 }
 
+function validateComment(content) {
+  if (content.length < 1) {
+    return false;
+  }
+  return true;
+}
+
 export default {
   validateLogin,
   validateSingup,
+  validateComment,
 };

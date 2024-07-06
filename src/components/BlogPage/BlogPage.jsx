@@ -8,7 +8,6 @@ function BlogPage() {
   const { postId } = useParams();
   const [loading, setLoading] = useState(true);
   const [postData, setPostData] = useState({});
-  const [comments, setComments] = useState([]);
 
   useEffect(() => {
     const fetchPostById = async () => {
@@ -16,12 +15,7 @@ function BlogPage() {
       setPostData(res.data);
       setLoading(false);
     };
-    const fetchPostComments = async () => {
-      const res = await blogService.getPostComments(postId);
-      setComments(res.data);
-    };
     void fetchPostById();
-    void fetchPostComments();
   }, [postId]);
 
   if (loading) {
@@ -50,7 +44,7 @@ function BlogPage() {
         />
         <Text>{postData.content}</Text>
       </Flex>
-      <CommentSection commentData={comments} />
+      <CommentSection postId={postId} />
     </Flex>
   );
 }
