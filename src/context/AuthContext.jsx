@@ -13,7 +13,11 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await AuthService.login(username, password);
       console.log("Login response:", res);
-      const userData = { username, token: res.data.token };
+      const userData = {
+        username,
+        token: res.data.token,
+        userId: res.data.userId,
+      };
       localStorage.setItem("user", JSON.stringify(userData));
       setUser(userData);
 

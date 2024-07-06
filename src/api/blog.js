@@ -21,7 +21,6 @@ const getPostComments = async (postId) => {
 
 const postComment = async (postId, commentData, token) => {
   try {
-    console.log(`${apiBaseUrl}/posts/${postId}/comments`);
     const { data } = await axios.post(
       `${apiBaseUrl}/posts/${postId}/comments`,
       {
@@ -44,9 +43,31 @@ const postComment = async (postId, commentData, token) => {
   }
 };
 
+const deleteCommentById = async (postId, commentId, token) => {
+  try {
+    const { data } = await axios.delete(
+      `${apiBaseUrl}/posts/${postId}/comments/${commentId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      }
+    );
+    return data;
+  } catch (error) {
+    if (error.resposne) {
+      throw error.resposne.data;
+    } else {
+      throw new Error("Network error");
+    }
+  }
+};
+
 export default {
   getAllPosts,
   getPostById,
   getPostComments,
   postComment,
+  deleteCommentById,
 };

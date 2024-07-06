@@ -10,14 +10,38 @@ import {
   Textarea,
   Button,
   Alert,
+  AlertIcon,
 } from "@chakra-ui/react";
-import { AlertIcon } from "@chakra-ui/react";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../../context/AuthContext";
 import util from "../../utils/validate";
 import blogService from "../../api/blog";
 
-function CommentCard({ comment }) {
+function CommentCard({ user, comment, deleteComment }) {
+  async function handleDelete(e) {
+    e.preventDefault();
+    console.log("delete commment " + comment._id);
+    try {
+      const sessionUser = JSON.parse(localStorage.getItem("user"));
+
+      await blogService.deleteCommentById(
+        comment.parentPost,
+        comment._id,
+        sessionUser.token
+      );
+
+      deleteComment(comment._id);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async function handleEdit(e) {
+    e.preventDefault();
+    console.log("edit comment");
+  }
+
   return (
     <Box
       display={"flex"}
@@ -27,11 +51,24 @@ function CommentCard({ comment }) {
       height={"100px"}
       p={"10px"}
     >
-      <Box display={"flex"} gap={"10px"} alignItems={"center"}>
-        <Text fontSize="18px" fontWeight={"bold"}>
-          {comment.author.username}
-        </Text>
-        <Text>{comment.postedDate}</Text>
+      <Box display={"flex"} alignItems={"center"} justifyItems={""}>
+        <Flex gap={"10px"} alignItems={"center"}>
+          <Text fontSize="18px" fontWeight={"bold"}>
+            {comment.author.username}
+          </Text>
+          <Text>{comment.postedDate}</Text>
+        </Flex>
+        <Spacer />
+        {user && user.userId === comment.author._id && (
+          <Flex gap={"5px"}>
+            <Button onClick={handleEdit}>
+              <EditIcon />
+            </Button>
+            <Button onClick={handleDelete}>
+              <DeleteIcon />
+            </Button>
+          </Flex>
+        )}
       </Box>
       <Spacer />
       <Text>{comment.content}</Text>
@@ -39,14 +76,19 @@ function CommentCard({ comment }) {
   );
 }
 
-function AddComment({ postId, addNewComment }) {
-  const { user } = useContext(AuthContext);
+function AddCommentBox({ user, postId, addNewComment }) {
   const [commentData, setCommentData] = useState("");
   const [error, setError] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
     setError("");
+
+    // check if user is logged in
+    if (!user) {
+      setError("Must be logged in to comment. Refresh page");
+      return;
+    }
 
     // validate input
     if (!util.validateComment(commentData)) {
@@ -109,6 +151,7 @@ function AddComment({ postId, addNewComment }) {
 
 function CommentSection({ postId }) {
   const [comments, setComments] = useState([]);
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchPostComments = async () => {
@@ -124,6 +167,12 @@ function CommentSection({ postId }) {
     setComments(newComments);
   };
 
+  const deleteComment = (commentId) => {
+    setComments((prevComments) =>
+      prevComments.filter((comment) => comment._id !== commentId)
+    );
+  };
+
   return (
     <Box w={"60%"}>
       <Box>
@@ -132,10 +181,19 @@ function CommentSection({ postId }) {
       </Box>
       <Box display={"flex"} flexDir={"column"} gap={"10px"}>
         {comments.map((comment) => (
-          <CommentCard key={comment._id} comment={comment} />
+          <CommentCard
+            key={comment._id}
+            user={user}
+            comment={comment}
+            deleteComment={deleteComment}
+          />
         ))}
       </Box>
-      <AddComment postId={postId} addNewComment={addNewComment} />
+      <AddCommentBox
+        user={user}
+        postId={postId}
+        addNewComment={addNewComment}
+      />
     </Box>
   );
 }

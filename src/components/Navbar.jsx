@@ -7,7 +7,7 @@ import {
   ButtonGroup,
   Link as ChakraLink,
 } from "@chakra-ui/react";
-import { SettingsIcon } from "@chakra-ui/icons";
+// import { SettingsIcon } from "@chakra-ui/icons";
 import { Link as ReactRouterLink } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import { useContext } from "react";
@@ -17,11 +17,11 @@ function NavBar() {
   const navMargin = "20px";
 
   return (
-    <Box bg="white" w="100%" h="4rem">
+    <Box bg="white" h={"4rem"} width="100%">
       <Flex h="100%" alignItems={"center"} ml={navMargin} mr={navMargin}>
         <Button variant="link" fontSize={32}>
           <ChakraLink as={ReactRouterLink} to="/">
-            Blog
+            <Text>Blog</Text>
           </ChakraLink>
         </Button>
         <Spacer />
@@ -32,10 +32,12 @@ function NavBar() {
                 <Button>New Post</Button>
               </ChakraLink>
               <Button onClick={logout}>Logout</Button>
-              <Button>
-                <Text>{user.username}</Text>
-                <SettingsIcon />
-              </Button>
+              {/* <Button>
+                <Box display={"flex"} gap={"3px"} alignItems={"center"}>
+                  <Text>{user.username}</Text>
+                  <SettingsIcon />
+                </Box>
+              </Button> */}
             </>
           ) : (
             <>
