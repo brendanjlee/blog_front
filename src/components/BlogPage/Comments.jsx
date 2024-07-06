@@ -10,6 +10,8 @@ import {
   Textarea,
   Button,
 } from "@chakra-ui/react";
+import AuthContext from "../../context/AuthContext";
+import { useContext } from "react";
 
 function CommentCard({ comment }) {
   return (
@@ -34,14 +36,26 @@ function CommentCard({ comment }) {
 }
 
 function AddComment() {
+  const { user } = useContext(AuthContext);
   return (
     <Box mt={"20px"}>
       <Flex flexDir={"column"} gap={"10px"}>
-        <Text>Share your thoughts:</Text>
-        <Box backgroundColor={"white"}>
-          <Textarea />
-        </Box>
-        <Button maxW={"100px"}>Post</Button>
+        {user ? (
+          <>
+            <Text>Share your thoughts:</Text>
+            <Box backgroundColor={"white"}>
+              <Textarea />
+            </Box>
+            <Button maxW={"100px"}>Post</Button>
+          </>
+        ) : (
+          <>
+            <Text>Login to comment: </Text>
+            <Box backgroundColor={"white"}>
+              <Textarea disabled />
+            </Box>
+          </>
+        )}
       </Flex>
     </Box>
   );

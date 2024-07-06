@@ -7,8 +7,11 @@ import {
   Link as ChakraLink,
 } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
+import AuthContext from "../context/AuthContext";
+import { useContext } from "react";
 
 function NavBar() {
+  const { user, logout } = useContext(AuthContext);
   const navMargin = "20px";
 
   return (
@@ -21,12 +24,24 @@ function NavBar() {
         </Button>
         <Spacer />
         <ButtonGroup>
-          <ChakraLink as={ReactRouterLink} to="/login">
-            <Button>Login</Button>
-          </ChakraLink>
-          <ChakraLink as={ReactRouterLink} to="/signup">
-            <Button>Signup</Button>
-          </ChakraLink>
+          {user ? (
+            <>
+              <ChakraLink as={ReactRouterLink} to="/">
+                <Button>New Post</Button>
+              </ChakraLink>
+              <Button onClick={logout}>Logout</Button>
+              <Button>{user.username}</Button>
+            </>
+          ) : (
+            <>
+              <ChakraLink as={ReactRouterLink} to="/login">
+                <Button>Login</Button>
+              </ChakraLink>
+              <ChakraLink as={ReactRouterLink} to="/signup">
+                <Button>Signup</Button>
+              </ChakraLink>
+            </>
+          )}
         </ButtonGroup>
       </Flex>
     </Box>
