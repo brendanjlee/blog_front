@@ -5,6 +5,14 @@ function validateLogin(username, password) {
   return true;
 }
 
+function validateSingup(email, username, password) {
+  if (username.length < 5 || password.length < 8 || email < 5) {
+    return false;
+  }
+  return true;
+}
+
 export default {
   validateLogin,
+  validateSingup,
 };

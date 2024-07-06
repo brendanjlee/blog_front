@@ -87,6 +87,7 @@ function Login() {
               id="username"
               name="username"
               onChange={(e) => setUsername(e.target.value)}
+              autoComplete="username"
             />
             <FormLabel htmlFor="password">Password</FormLabel>
             <Input
