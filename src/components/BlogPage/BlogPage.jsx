@@ -2,7 +2,7 @@ import { Flex, Text, Box, Image, Center } from "@chakra-ui/react";
 import CommentSection from "./Comments";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import blogService from "../../services/blog";
+import blogService from "../../api/blog";
 
 function BlogPage() {
   const { postId } = useParams();

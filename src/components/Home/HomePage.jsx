@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Center, Text } from "@chakra-ui/react";
-import blogService from "../../services/blog";
+import blogService from "../../api/blog";
 import PostList from "./PostCard";
 
 function HomePage() {
